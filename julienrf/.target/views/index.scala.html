@@ -9,7 +9,8 @@
         (function () {
             var feedEl = document.getElementById('twitter-feed');
             var tweetCount = 5;
-            var es = new EventSource('???');
+           // var es = new EventSource('http://twitter.com/France2tv');
+            var es = new EventSource('/twitterFeed');
             es.onmessage = function (message) {
                 if (message.data) {
                     var tweets = feedEl.childNodes;

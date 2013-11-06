@@ -1,6 +1,6 @@
 package views.form
 
-import views.html.helper.{ FieldElements, FieldConstructor }
+import views.html.helper.{FieldElements, FieldConstructor}
 import views.html.form.fieldCtor
 
 object HorizontalForm {

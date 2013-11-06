@@ -6,6 +6,7 @@ import play.libs.EventSource;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.mvc.Results.Chunks.Out;
 import services.Twitter;
 import static play.data.Form.form;
 
@@ -18,7 +19,7 @@ public class Application extends Controller {
      * Affiche le tableau de bord de l’utilisateur courant (p. ex. un résumé de ses dernières activités sportives).
      * Si l’utilisateur ne s’est pas identifié il doit être redirigé vers la page de login.
      */
-    @Security.Authenticated
+    @Security.Authenticated(Authenticator.class)
     public static Result index() {
         return ok(views.html.index.render(request().username()));
     }
@@ -26,7 +27,7 @@ public class Application extends Controller {
     /**
      * Affiche le formulaire d’identification.
      */
-    public static Result loginForm() {
+    public static Result loginForm() {    
         return ok(views.html.login.render(form(Login.class)));
     }
 
@@ -37,6 +38,7 @@ public class Application extends Controller {
      * Sinon, authentifier l’utilisateur (enregistrer son nom dans sa session) et le rediriger vers son tableau de bord.
      */
     public static Result login() {
+    	
     	Form<Login> form = Form.form(Login.class);
     	Form<Login> submission = form.bindFromRequest();
     	
@@ -61,14 +63,32 @@ public class Application extends Controller {
      * Envoie un flux de tweets d’utilisateurs d’Endomondo.
      */
     public static Result twitterFeed() {
+    	
         final EventSource eventSource = new EventSource() {
             @Override
             public void onConnected() {
-                // TODO utiliser le service Twitter pour obtenir un flux de tweets à afficher
+              
             }
 
         };
-        return ok(eventSource);
+        
+        controllers.EventSource pes = new controllers.EventSource() {
+			
+			@Override
+			public void onReady(Out arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onConnected() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+        twitter.publicStream("love", pes);
+		return ok(pes.toString());
+        //return ok(eventSource);
     }
 
 }
