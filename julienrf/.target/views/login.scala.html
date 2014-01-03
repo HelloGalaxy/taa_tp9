@@ -1,11 +1,9 @@
-@(form: play.data.Form[forms.Login])
-
+@(form:  play.data.Form[forms.Login], message : String)
 @import views.form.HorizontalForm._
 
 @skel {
-
-    <!--  before it was ???, now it is changed to the correct action .-->
-    @helper.form(action = routes.Application.login()) {
+     <h3 style="color:RED"> @message  </h3>
+    @helper.form(action =  routes.Application.login()) {
 
         @if(form.hasGlobalErrors) {
             <div class="form-group has-error">

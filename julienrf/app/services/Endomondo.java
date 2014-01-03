@@ -1,8 +1,23 @@
 package services;
 
-import scala.NotImplementedError;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
-import static play.libs.F.Promise;
+import play.libs.F;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.WS;
+import play.libs.WS.Response;
+import play.libs.WS.WSRequestHolder;
+import play.mvc.Result;
+import scala.NotImplementedError;
+//import static play.libs.F.Promise;
 
 /**
  * Bibliothèque utilitaire pour effectuer des requêtes HTTP sur votre Web service Endomondo.
@@ -22,7 +37,58 @@ public class Endomondo {
      * @return Une promesse de booléen qui vaudra `true` ssi l’utilisateur a pu être identifié
      */
     public Promise<Boolean> authenticate(String name, String password) {
-        throw new NotImplementedError("TODO");
+  
+             return null;
     }
+
+    
+    public List<String> getPromiseForRegisteredUsersXXX() {
+        
+    	System.out.println(" Inside of Get Priomise For registered user ! ");
+    	
+    	 
+    	@SuppressWarnings("unused")
+		Promise<WS.Response> wsPromise = WS.url("http://localhost:8080/rest/user/allusers")
+                .setContentType("application/json; charset=utf-8")
+                .get();
+    	
+    	Promise<List<String>> resultPromise = wsPromise.map(new F.Function<WS.Response, List<String> >() {
+    	    @Override
+    	    public List<String> apply(WS.Response response) throws Throwable {
+    	    	System.out.println("Reponse from server  .... is : ");
+    	        System.out.println(response.getBody());
+    	        List<String> li = new LinkedList<String>();
+    	        li.add(response.getBody());
+    	        return   li;
+    	    }
+    	});	
+    	    return  resultPromise.get();
+    }
+    
+    
+    
+    public List<String> getPromiseForRegisteredUsers() {
+    
+    	System.out.println(" Inside of Get Priomise For registered user ! ");
+    	
+    	 
+    	@SuppressWarnings("unused")
+		Promise<WS.Response> wsPromise = WS.url("http://localhost:8080/rest/user/allusernames")
+                .setContentType("application/json; charset=utf-8")
+                .get();
+    	
+    	Promise<List<String>> resultPromise = wsPromise.map(new F.Function<WS.Response, List<String> >() {
+    	    @Override
+    	    public List<String> apply(WS.Response response) throws Throwable {
+    	    	System.out.println("Reponse from server  .... is : ");
+    	        System.out.println(response.getBody());
+    	        List<String> li = new LinkedList<String>();
+    	        li.add(response.getBody());
+    	        return   li;
+    	    }
+    	});	
+    	    return  resultPromise.get();
+    }
+       
 
 }
